@@ -13,6 +13,7 @@ interface ShellContextType {
   setLastCommandIndex: (index: number) => void;
   execute: (command: string) => Promise<void>;
   clearHistory: () => void;
+  app: string;
 }
 
 const ShellContext = React.createContext<ShellContextType>(null);
@@ -29,6 +30,8 @@ export const ShellProvider: React.FC<ShellProviderProps> = ({ children }) => {
   const [command, _setCommand] = React.useState<string>('');
   const [lastCommandIndex, _setLastCommandIndex] = React.useState<number>(0);
   const { theme, setTheme } = useTheme();
+
+  const [app, setApp] = React.useState('cmd');
 
   useEffect(() => {
     setCommand('banner');
@@ -69,18 +72,44 @@ export const ShellProvider: React.FC<ShellProviderProps> = ({ children }) => {
   const execute = async () => {
     const [cmd, ...args] = command.split(' ').slice(1);
 
+    if (app === 'mysql') {
+      switch (cmd) {
+        case 'exit':
+          setApp('cmd');
+          setHistory('Bye');
+          break;
+        default:
+          let startTime = performance.now();
+          let output = await bin['mysql'](`${cmd} ${args.join(' ')}`);
+          let endTime = performance.now();
+          let timeDiff = endTime - startTime; //in ms
+
+          let sec = Number((timeDiff /= 1000).toFixed(2));
+          output = `${output}\n (${sec} sec)`;
+          setHistory(output);
+      }
+      return;
+    }
+
     switch (cmd) {
       case 'theme':
         const output = await bin.theme(args, setTheme);
-
         setHistory(output);
-
         break;
       case 'clear':
         clearHistory();
         break;
       case '':
         setHistory('');
+        break;
+      case 'mysql':
+        setApp('mysql');
+        try {
+          const output = await bin['mysql'](null);
+          setHistory(output);
+        } catch (error) {
+          setHistory(error.message);
+        }
         break;
       default: {
         if (Object.keys(bin).indexOf(cmd) === -1) {
@@ -109,6 +138,7 @@ export const ShellProvider: React.FC<ShellProviderProps> = ({ children }) => {
         setLastCommandIndex,
         execute,
         clearHistory,
+        app,
       }}
     >
       {children}

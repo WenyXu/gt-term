@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../../utils/themeProvider';
+import { useShell } from '../../utils/shellProvider';
 
 export const Ps1 = () => {
   const [hostname, setHostname] = useState('');
@@ -10,39 +11,55 @@ export const Ps1 = () => {
       setHostname(window.location.hostname);
     }
   }, []);
+  const { app } = useShell();
 
-  return (
-    <div>
-      <span
-        style={{
-          color: theme.yellow,
-        }}
-      >
-        guest
-      </span>
-      <span
-        style={{
-          color: theme.white,
-        }}
-      >
-        @
-      </span>
-      <span
-        style={{
-          color: theme.green,
-        }}
-      >
-        {hostname}
-      </span>
-      <span
-        style={{
-          color: theme.white,
-        }}
-      >
-        :$ ~
-      </span>
-    </div>
-  );
+  switch (app) {
+    case 'mysql':
+      return (
+        <div>
+          <span
+            style={{
+              color: theme.white,
+            }}
+          >
+            {'mysql> '}
+          </span>
+        </div>
+      );
+    default:
+      return (
+        <div>
+          <span
+            style={{
+              color: theme.yellow,
+            }}
+          >
+            guest
+          </span>
+          <span
+            style={{
+              color: theme.white,
+            }}
+          >
+            @
+          </span>
+          <span
+            style={{
+              color: theme.green,
+            }}
+          >
+            {hostname}
+          </span>
+          <span
+            style={{
+              color: theme.white,
+            }}
+          >
+            :$ ~
+          </span>
+        </div>
+      );
+  }
 };
 
 export default Ps1;

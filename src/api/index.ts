@@ -1,6 +1,15 @@
 import axios from 'axios';
 import config from '../../config.json';
 
+export const getQuery = async (query: String) => {
+  try {
+    const { data } = await axios.post(`/api/query`, { query });
+    return data.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export const getProjects = async () => {
   const { data } = await axios.get(
     `https://api.github.com/users/${config.social.github}/repos`,
