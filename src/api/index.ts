@@ -6,7 +6,7 @@ export const getQuery = async (query: String) => {
     const { data } = await axios.post(`/api/query`, { query });
     return data.data;
   } catch (err) {
-    return err;
+    return JSON.stringify(err.response.data.data);
   }
 };
 
