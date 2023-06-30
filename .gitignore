@@ -46,4 +46,4 @@ _static/
 
 .vscode/
 
-.env.*
+.env.local
