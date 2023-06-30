@@ -1,82 +1,28 @@
-# [M4TT72 | Terminal](https://term.m4tt72.com)
+# GreptimeDB on vercel 🤣
 
-A terminal style website
+![screenshot](./docs/screenshot.png)
 
-![screenshot](/docs/screenshot.png)
+## Before start
+1. Setup a [GreptimeDB Cloud](https://console.greptime.cloud/) Account.
+2. Create a free database instance,
 
-## why?
+## Deploy on vercel
+1. Fork this project
+2. Open [Vercel](https://vercel.com/), and Click `Add New Project`.
+3. Select your forked Repo.
+4. Fill `.env.example` and copy the file content into `Environment Variables` form.
+   
+![screenshot](./docs/vercel.png)
+5. Deploy!
+## Local playground
 
-TL;DR: why not?
-
-I'm a Linux enthusiast, and I tried creating something that will allow 'normal' people to have a glimpse at my world.
-
-## Quick Start
-
-### Using docker (recommended)
-
-```bash
-docker run -d --name terminal -p 3000:3000 m4tt72/terminal
+1. cp `.env.example` `.env`.
+2. Copy the connection info from [console](https://console.greptime.cloud/).
 ```
-
-If you want to run with custom configuration, make sure you have a copy of `config.json` then mount in the container:
-
-```bash
-docker run -d \
-  --name terminal \
-  -p 3000:3000 \
-  -v `pwd`/config.json:/data/config.json \
-  m4tt72/terminal
+PGSQL_HOST=
+PGSQL_PORT=4003
+PGSQL_DATABASE=
+PGSQL_USER=
+PGSQL_PASSWORD=
 ```
-
-### Using npm/yarn
-
-1. Install dependencies:
-
-```bash
-yarn install
-```
-
-2. Build the project:
-
-```bash
-yarn build
-```
-
-3. Run the server:
-
-```bash
-yarn start
-```
-
-## Configuration
-
-Here's a sample of the `config.json` file:
-
-```json
-{
-  "bioUrl": "https://raw.githubusercontent.com/m4tt72/m4tt72/master/README.md",
-  "social": {
-    "instagram": "m4tt72",
-    "github": "m4tt72",
-    "linkedin": "yassinefathi"
-  },
-  "theme": "gruvboxdark" // list of themes available in themes.json
-}
-```
-
-## Themes
-
-![themes](/docs/screenshot.gif)
-
-[Here's](/docs/themes) a list of available themes.
-
-
-## Contributing
-
-Please feel free to pull requests or log issues.
-
-Thanks!
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=m4tt72/terminal&type=Date)](https://star-history.com/#m4tt72/terminal&Date)
+4. Have fun! `yarn && yarn dev` .
